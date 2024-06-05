@@ -1,0 +1,36 @@
+1. Write a function `is_prime(n: int) -> bool` that checks if a given number is prime.
+
+def is_prime(n):
+    b = 0
+    for i in range(2,n):
+        if n%i == 0:
+            b = b + 1 
+    if b == 0:
+        print(True)
+    else:
+        print(False)
+is_prime(int(input()))        
+
+2. Write a Python function `reverse_string(s: str) -> str` that takes a string and returns its reverse.
+
+def reverse_string(s):
+    reverse_of_s = s[::-1]
+    print(reverse_of_s)
+reverse_string(input())   
+
+3. Given a list of integers, write a function `sum_of_squares(lst: List[int]) -> int` that returns the sum of the squares of the elements.
+
+def sum_of_squares(lst):
+    sqaures_of_list = []
+    for i in lst:
+        sqaures_of_list = sqaures_of_list + [i**2]
+    print(sum(sqaures_of_list))
+sum_of_squares(list(map(int,input().split(","))))  
+
+4. Write a Python program to count the frequency of each character in a given string and return a dictionary with characters as keys and their frequencies as values.
+
+a = input()
+b = {}
+for i in a:
+    b[i] = a.count(i)
+print(b) 
