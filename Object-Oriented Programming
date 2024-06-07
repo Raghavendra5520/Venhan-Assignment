@@ -1,0 +1,165 @@
+Object-Oriented Programming
+18. Create a class Book with the following attributes and methods:
+*Attributes: `title`, `author`, `pages`
+*Methods:
+*`__init__(self, title: str, author: str, pages: int)`: Constructor to initialize the attributes.
+*`__str__(self) -> str`: Method to return a string representation of the book.
+
+class Book:
+    def __init__(self, title: str, author: str, pages: int):
+        self.title = title
+        self.author = author
+        self.pages = pages
+
+    def __str__(self) -> str:
+        return f"'{self.title}' by {self.author}, {self.pages} pages"
+
+
+book = Book("Harry potter", "RJ thomson", 587)
+print(book)  
+
+19. Create a class `Rectangle` with the following attributes and methods:
+*Attributes: length, width
+*Methods:
+*`__init__(self, length: float, width: float)`: Constructor to initialize the attributes.
+*`area(self) -> float`: Method to calculate the area of the rectangle.
+*`perimeter(self) -> float`: Method to calculate the perimeter of the rectangle.
+
+class Rectangle:
+    def __init__(self, length: float, width: float):
+        self.length = length
+        self.width = width
+
+    def area(self) -> float:
+        return self.length * self.width
+
+    def perimeter(self) -> float:
+        return 2 * (self.length + self.width)
+
+
+rectangle = Rectangle(8.0, 4.0)
+print("Area:", rectangle.area())          
+print("Perimeter:", rectangle.perimeter())
+
+20. Write a class `BankAccount` with the following:
+*Attributes: account_number, account_holder, balance
+*Methods:
+*`__init__(self, account_number: str, account_holder: str, balance: float = 0.0)`:
+Constructor to initialize the attributes.
+*`deposit(self, amount: float) -> None`: Method to deposit money into the account.
+*`withdraw(self, amount: float) -> bool`: Method to withdraw money from the account. It
+should return True if the withdrawal was successful, and False if there were insufficient
+funds.
+*`get_balance(self) -> float`: Method to return the current balance.
+
+class BankAccount:
+    def __init__(self, account_number: str, account_holder: str, balance: float = 0.0):
+        self.account_number = account_number
+        self.account_holder = account_holder
+        self.balance = balance
+
+    def deposit(self, amount: float) -> None:
+        if amount > 0:
+            self.balance += amount
+
+    def withdraw(self, amount: float) -> bool:
+        if 0 < amount <= self.balance:
+            self.balance -= amount
+            return True
+        return False
+
+    def get_balance(self) -> float:
+        return self.balance
+
+# Example usage
+account = BankAccount("123456789", "John Doe", 100.0)
+print("Initial balance:", account.get_balance())  # Output: Initial balance: 100.0
+
+account.deposit(50.0)
+print("Balance after deposit:", account.get_balance())  # Output: Balance after deposit: 150.0
+
+success = account.withdraw(70.0)
+print("Withdrawal successful:", success)  # Output: Withdrawal successful: True
+print("Balance after withdrawal:", account.get_balance())  # Output: Balance after withdrawal: 80.0
+
+success = account.withdraw(200.0)
+print("Withdrawal successful:", success)  # Output: Withdrawal successful: False
+print("Balance after failed withdrawal:", account.get_balance())  # Output: Balance after failed withdrawal: 80.0
+
+21. Inheritance and Polymorphism
+Create a class hierarchy for `Shape`, `Circle`, and `Rectangle`. The base class Shape should have methods to calculate area and perimeter, which are overridden in the derived
+classes `Circle` and `Rectangle`.
+
+import math
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self) -> float:
+        pass
+
+    @abstractmethod
+    def perimeter(self) -> float:
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius: float):
+        self.radius = radius
+
+    def area(self) -> float:
+        return math.pi * self.radius ** 2
+
+    def perimeter(self) -> float:
+        return 2 * math.pi * self.radius
+
+class Rectangle(Shape):
+    def __init__(self, length: float, width: float):
+        self.length = length
+        self.width = width
+
+    def area(self) -> float:
+        return self.length * self.width
+
+    def perimeter(self) -> float:
+        return 2 * (self.length + self.width)
+
+# Example usage
+shapes = [
+    Circle(7.0),
+    Rectangle(8.0, 4.0)
+]
+
+for shape in shapes:
+    print(f"Shape: {shape.__class__.__name__}, Area: {shape.area():.2f}, Perimeter: {shape.perimeter():.2f}")
+
+22. Class Methods and Static Methods
+Write a class `Employee` with class methods to keep track of the number of employees and static methods to validate employee ID format (e.g., must be a string of digits).
+
+class Employee:
+    employee_count = 0
+
+    def __init__(self, employee_id: str):
+        self.employee_id = employee_id
+        Employee.increment_employee_count()
+
+    @classmethod
+    def increment_employee_count(cls):
+        cls.employee_count += 1
+
+    @classmethod
+    def get_employee_count(cls):
+        return cls.employee_count
+
+    @staticmethod
+    def is_valid_employee_id(employee_id: str) -> bool:
+        return employee_id.isdigit()
+
+# Example usage
+emp1 = Employee("12345")
+emp2 = Employee("67890")
+
+print("Total number of employees:", Employee.get_employee_count())  # Output: Total number of employees: 2
+
+print("Is '12345' a valid employee ID?", Employee.is_valid_employee_id("12345"))  # Output: Is '12345' a valid employee ID? True
+print("Is 'abcde' a valid employee ID?", Employee.is_valid_employee_id("abcde"))  # Output: Is 'abcde' a valid employee ID? False
+
