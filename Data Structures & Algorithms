@@ -1,0 +1,258 @@
+12. Write a function `merge_sort(arr: List[int]) -> List[int]` that implements the merge sort algorithm.
+
+from typing import List
+
+def merge_sort(arr: List[int]) -> List[int]:
+    if len(arr) <= 1:
+        return arr
+    
+    # Split the array into two halves
+    mid = len(arr) // 2
+    left_half = arr[:mid]
+    right_half = arr[mid:]
+    
+    # Recursively sort each half
+    left_sorted = merge_sort(left_half)
+    right_sorted = merge_sort(right_half)
+    
+    # Merge the two sorted halves
+    return merge(left_sorted, right_sorted)
+
+def merge(left: List[int], right: List[int]) -> List[int]:
+    sorted_arr = []
+    i = j = 0
+    
+    # Merge the two sorted lists
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            sorted_arr.append(left[i])
+            i += 1
+        else:
+            sorted_arr.append(right[j])
+            j += 1
+    
+    # Add any remaining elements from the left half
+    while i < len(left):
+        sorted_arr.append(left[i])
+        i += 1
+    
+    # Add any remaining elements from the right half
+    while j < len(right):
+        sorted_arr.append(right[j])
+        j += 1
+    
+    return sorted_arr
+
+# Example 
+arr = [6,3,5,32,1]
+sorted_arr = merge_sort(arr)
+print(sorted_arr) 
+
+13. Implement a function `find_duplicates(arr: List[int]) -> List[int]` that returns a list of duplicate elements in the input list.
+
+from typing import List
+
+def find_duplicates(arr: List[int]) -> List[int]:
+    unique = set()
+    duplicates = set()
+    
+    for num in arr:
+        if num in unique:
+            duplicates.add(num)
+        else:
+            unique.add(num)
+    
+    return list(duplicates)
+
+# Example 
+arr = [99,10,28,255,99,10,5,9,11,29,11]
+duplicates = find_duplicates(arr)
+print(duplicates)  
+
+14. Write a function `is_palindrome(s: str) -> bool` to check if a given string is a palindrome (reads the same forward and backward).
+
+def is_palindrome(s):
+    reverse_word = s[::-1]
+    if reverse_word == s:
+        print(True)
+    else:
+        print(False)
+        
+s = input()
+is_palindrome(s)
+
+15. Sorting
+Implement the quicksort algorithm in Python.
+
+from typing import List
+
+def quicksort(arr: List[int]) -> List[int]:
+    if len(arr) <= 1:
+        return arr
+    
+    
+    pivot = arr[-1]
+    left = []
+    right = []
+    
+
+    for element in arr[:-1]:
+        if element <= pivot:
+            left.append(element)
+        else:
+            right.append(element)
+    
+    
+    return quicksort(left) + [pivot] + quicksort(right)
+
+
+arr = [99,20,76,48,92,18]
+sorted_arr = quicksort(arr)
+print(sorted_arr) 
+
+16. Binary Search Tree (BST)
+Write a class `BST` with methods to insert, find, and delete nodes in a binary search tree. Also, include a method to find the height of the tree.
+
+class Node:
+    def __init__(self, key: int):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key: int):
+        if self.root is None:
+            self.root = Node(key)
+        else:
+            self._insert(self.root, key)
+
+    def _insert(self, node: Node, key: int):
+        if key < node.key:
+            if node.left is None:
+                node.left = Node(key)
+            else:
+                self._insert(node.left, key)
+        else:
+            if node.right is None:
+                node.right = Node(key)
+            else:
+                self._insert(node.right, key)
+
+    def find(self, key: int) -> bool:
+        return self._find(self.root, key)
+
+    def _find(self, node: Node, key: int) -> bool:
+        if node is None:
+            return False
+        if key == node.key:
+            return True
+        elif key < node.key:
+            return self._find(node.left, key)
+        else:
+            return self._find(node.right, key)
+
+    def delete(self, key: int):
+        self.root = self._delete(self.root, key)
+
+    def _delete(self, node: Node, key: int) -> Node:
+        if node is None:
+            return node
+        if key < node.key:
+            node.left = self._delete(node.left, key)
+        elif key > node.key:
+            node.right = self._delete(node.right, key)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            temp = self._min_value_node(node.right)
+            node.key = temp.key
+            node.right = self._delete(node.right, temp.key)
+        return node
+
+    def _min_value_node(self, node: Node) -> Node:
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def height(self) -> int:
+        return self._height(self.root)
+
+    def _height(self, node: Node) -> int:
+        if node is None:
+            return 0
+        left_height = self._height(node.left)
+        right_height = self._height(node.right)
+        return max(left_height, right_height) + 1
+
+# Example usage
+bst = BST()
+bst.insert(50)
+bst.insert(30)
+bst.insert(70)
+bst.insert(20)
+bst.insert(40)
+bst.insert(60)
+bst.insert(80)
+
+print(bst.find(50))  # Output: True
+print(bst.find(25))  # Output: False
+
+bst.delete(20)
+print(bst.find(20))  # Output: False
+
+print(bst.height())  # Output: 3
+
+17. Graph Algorithms
+Write a function `dijkstra(graph: Dict[str, Dict[str, int]], start: str) -> Dict[str, int]` that implements Dijkstra's algorithm to find the shortest path from the start node to all 
+other nodes in a weighted graph represented as an adjacency list.
+
+from typing import Dict, Tuple
+import heapq
+
+def dijkstra(graph: Dict[str, Dict[str, int]], start: str) -> Dict[str, int]:
+    # Initialize the distances dictionary with infinity for all nodes except the start node
+    distances = {node: float('infinity') for node in graph}
+    distances[start] = 0
+
+    # Priority queue to keep track of nodes with the smallest known distance
+    priority_queue = [(0, start)]
+    
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+
+        # If the distance in the priority queue is greater than the recorded distance, skip processing
+        if current_distance > distances[current_node]:
+            continue
+
+        # Iterate through the neighbors of the current node
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+
+            # If a shorter path to the neighbor is found, update the distances and push to the priority queue
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(priority_queue, (distance, neighbor))
+
+    return distances
+
+# Example usage
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1}
+}
+
+start_node = 'A'
+distances = dijkstra(graph, start_node)
+print(distances)  # Output: {'A': 0, 'B': 1, 'C': 3, 'D': 4}
+
+
+
+
