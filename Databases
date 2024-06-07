@@ -1,0 +1,25 @@
+9. SQL Basics
+Write a SQL query to create a table `students` with columns `id`, `name`, and `grade`.
+
+CREATE TABLE students (id int , name varchar(100), grade int);
+
+10. Basic Database Operations
+Write a Python function `insert_student(name: str, grade: float)` that inserts a new student into the `students` table using SQLite.
+
+import sqlite3
+
+def insert_student(name: str, grade: float):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('students.db')  # 'students.db' is the database file
+    cursor = conn.cursor()
+
+
+    # Insert a new student into the students table
+
+    cursor.execute('''INSERT INTO STUDENT VALUES ('Raju', 'A')''') 
+
+    # Commit the transaction
+    conn.commit()
+
+    # Close the connection
+    conn.close()
