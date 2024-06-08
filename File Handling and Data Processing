@@ -1,0 +1,90 @@
+File Handling and Data Processing
+23. Write a function `read_file(file_path: str) -> List[str]` that reads a text file and returns a list of strings, each representing a line in the file.
+
+from typing import List
+
+def read_file(file_path: str) -> List[str]:
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+        return [line.strip() for line in lines]
+    except FileNotFoundError:
+        print(f"The file at {file_path} was not found.")
+        return []
+    except IOError:
+        print(f"An error occurred while reading the file at {file_path}.")
+        return []
+
+lines = read_file('example.txt')
+for line in lines:
+    print(line)
+
+24. Write a function `write_file(file_path: str, lines: List[str]) -> None` that writes a list of strings to a text file, each string on a new line.
+
+from typing import List
+
+def write_file(file_path: str, lines: List[str]) -> None:
+    try:
+        with open(file_path, 'w') as file:
+            for line in lines:
+                file.write(f"{line}\n")
+    except IOError:
+        print(f"An error occurred while writing to the file at {file_path}.")
+
+
+lines_to_write = ["First line", "Second line", "Third line"]
+write_file('output.txt', lines_to_write)
+
+25. CSV File Handling
+Write a function `read_csv(file_path: str) -> List[Dict[str, str]]` that reads a CSV file and returns a list of dictionaries, each representing a row in the CSV file.
+
+import csv
+from typing import List, Dict
+
+def read_csv(file_path: str) -> List[Dict[str, str]]:
+    rows = []
+    try:
+        with open(file_path, mode='r', newline='', encoding='utf-8') as file:
+            csv_reader = csv.DictReader(file)
+            for row in csv_reader:
+                rows.append(dict(row))
+    except FileNotFoundError:
+        print(f"The file at {file_path} was not found.")
+    except IOError:
+        print(f"An error occurred while reading the file at {file_path}.")
+    return rows
+
+
+csv_data = read_csv('data.csv')
+for row in csv_data:
+     print(row)
+
+26. JSON Data Processing
+Write a function `process_json(file_path: str) -> Dict` that reads a JSON file, processes the data (e.g., extracts specific fields), and returns a dictionary with the processed data.
+
+import json
+from typing import Dict, Any
+
+def process_json(file_path: str) -> Dict[str, Any]:
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            processed_data = {
+                "names": [user.get("name") for user in data],
+                "emails": [user.get("email") for user in data]
+            }
+            return processed_data
+    except FileNotFoundError:
+        print(f"The file at {file_path} was not found.")
+        return {}
+    except json.JSONDecodeError:
+        print(f"An error occurred while decoding the JSON file at {file_path}.")
+        return {}
+    except IOError:
+        print(f"An error occurred while reading the file at {file_path}.")
+        return {}
+
+processed_data = process_json('users.json')
+print(processed_data)
+
+
